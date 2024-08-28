@@ -1,9 +1,14 @@
 import os
 
-clientes = []
+clientes = [
+    {"nome": "Ana Silva", "categoria": "Novo Cliente", "ativo": True},
+    {"nome": "João Pereira", "categoria": "Cliente Frequente", "ativo": False},
+    {"nome": "Maria Oliveira", "categoria": "Cliente Frequente", "ativo": True}
+]
 
-def exibir_nome_do_programa():
+def mostra_titulo():
     print("""
+    
 ██████╗░██╗░█████╗░  ██╗░░██╗░█████╗░██╗██████╗░
 ██╔══██╗██║██╔══██╗  ██║░░██║██╔══██╗██║██╔══██╗
 ██████╦╝██║███████║  ███████║███████║██║██████╔╝
@@ -11,78 +16,88 @@ def exibir_nome_do_programa():
 ██████╦╝██║██║░░██║  ██║░░██║██║░░██║██║██║░░██║
 ╚═════╝░╚═╝╚═╝░░╚═╝  ╚═╝░░╚═╝╚═╝░░╚═╝╚═╝╚═╝░░╚═╝""")
 
-def exibir_opcoes():
-    print('1. Cadastrar novo cliente')
-    print('2. Listar clientes cadastrados')
-    print('3. Consultar detalhes de um cliente')
-    print('4. Sair\n')
+def mostra_escolhas():
+    print("1. Cadastrar Cliente")
+    print("2. Listar Clientes")
+    print("3. Atualizar Informações do Cliente")
+    print("4. Sair")
 
-def finalizar_app():
-    os.system('cls' if os.name == 'nt' else 'clear')
-    print('Finalizando o sistema do Salão de Beleza\n')
-    exit()
+def escolhe_opcao():
 
-def opcao_invalida():
-    print('Opção inválida!\n')
-    input('Digite uma tecla para voltar ao menu principal')
+    def exibir_subtitulo(texto):
+        os.system("cls" if os.name == 'nt' else 'clear')
+        print(texto)
+        print(" ")
 
-def cadastrar_cliente():
-    os.system('cls' if os.name == 'nt' else 'clear')
-    print('Cadastro de novos clientes\n')
-    nome_cliente = input('Digite o nome do cliente que deseja cadastrar: ')
-    clientes.append(nome_cliente)
-    print(f'O cliente {nome_cliente} foi cadastrado com sucesso\n')
-    input('Aperte qualquer tecla para voltar ao menu principal')
+    def retorna_menu():
+        input("Digite uma tecla para voltar ao menu principal ")
+        main()
 
-def listar_clientes():
-    os.system('cls' if os.name == 'nt' else 'clear')
-    print('Clientes cadastrados:\n')
-    if clientes:
-        for i, cliente in enumerate(clientes, start=1):
-            print(f'{i}. {cliente}')
-    else:
-        print('Nenhum cliente cadastrado.')
-    input('Aperte qualquer tecla para voltar ao menu principal')
+    def cadastrar_cliente():
+        exibir_subtitulo("Cadastrar Cliente")
+        nome_cliente = input("Digite o nome do cliente que deseja cadastrar: ")
+        categoria_cliente = input("Digite a categoria do cliente (ex. Novo Cliente, Cliente Frequente): ")
+        clientes.append({"nome": nome_cliente, "categoria": categoria_cliente, "ativo": True})
+        print(f"O cliente {nome_cliente} foi cadastrado com sucesso\n")
+        retorna_menu()
 
-def consultar_detalhes():
-    os.system('cls' if os.name == 'nt' else 'clear')
-    print('Consultar detalhes de um cliente\n')
-    listar_clientes()
-    if clientes:
-        try:
-            escolha = int(input('Digite o número do cliente para consultar detalhes: '))
-            if 1 <= escolha <= len(clientes):
-                print(f'Detalhes do cliente {clientes[escolha - 1]}\n')
+    def listar_clientes():
+        exibir_subtitulo("Lista de Clientes Cadastrados")
+        if clientes:
+            for cliente in clientes:
+                nome_cliente = cliente["nome"]
+                categoria_cliente = cliente["categoria"]
+                ativo = "Ativo" if cliente["ativo"] else "Inativo"
+                print(f" - {nome_cliente} | {categoria_cliente} | {ativo}")
+        else:
+            print("Nenhum cliente cadastrado.")
+        retorna_menu()
+
+    def atualizar_cliente():
+        exibir_subtitulo("Atualizar Informações do Cliente")
+        listar_clientes()
+        if clientes:
+            nome_cliente = input("Digite o nome do cliente para atualizar informações: ")
+            for cliente in clientes:
+                if cliente["nome"].lower() == nome_cliente.lower():
+                    nova_categoria = input("Digite a nova categoria do cliente: ")
+                    cliente["categoria"] = nova_categoria
+                    cliente["ativo"] = True
+                    print(f"As informações do cliente {nome_cliente} foram atualizadas com sucesso\n")
+                    break
             else:
-                print('Número inválido.')
-        except ValueError:
-            print('Entrada inválida. Por favor, insira um número.')
-    input('Aperte qualquer tecla para voltar ao menu principal')
+                print("Cliente não encontrado.")
+        retorna_menu()
 
-def escolher_opcao():
+    def finalizar_programa():
+        os.system("cls" if os.name == 'nt' else 'clear')
+        print("Finalizando o programa\n")
+        exit()
+
+    def opcao_invalida():
+        print("Opção inválida! Tente novamente.")
+        input("Aperte qualquer tecla para voltar")
+        main()
+
     try:
-        opcao_escolhida = int(input('Escolha uma opção: '))
-        
+        opcao_escolhida = int(input("Escolha uma opção: "))
         if opcao_escolhida == 1:
             cadastrar_cliente()
         elif opcao_escolhida == 2:
             listar_clientes()
         elif opcao_escolhida == 3:
-            consultar_detalhes()
+            atualizar_cliente()
         elif opcao_escolhida == 4:
-            finalizar_app()
+            finalizar_programa()
         else:
             opcao_invalida()
     except ValueError:
-        print('Entrada inválida. Por favor, insira um número.\n')
-        input('Digite uma tecla para voltar ao menu principal')
+        opcao_invalida()
 
 def main():
-    while True:
-        os.system('cls' if os.name == 'nt' else 'clear')
-        exibir_nome_do_programa()
-        exibir_opcoes()
-        escolher_opcao()
+    mostra_titulo()
+    mostra_escolhas()
+    escolhe_opcao()
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
