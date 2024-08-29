@@ -23,7 +23,6 @@ def mostra_escolhas():
     print("4. Sair")
 
 def escolhe_opcao():
-
     def exibir_subtitulo(texto):
         os.system("cls" if os.name == 'nt' else 'clear')
         print(texto)
@@ -36,8 +35,9 @@ def escolhe_opcao():
     def cadastrar_cliente():
         exibir_subtitulo("Cadastrar Cliente")
         nome_cliente = input("Digite o nome do cliente que deseja cadastrar: ")
-        categoria_cliente = input("Digite a categoria do cliente (ex. Novo Cliente, Cliente Frequente): ")
-        clientes.append({"nome": nome_cliente, "categoria": categoria_cliente, "ativo": True})
+        categoria_cliente = input("Digite a categoria do cliente: ")
+        dados_do_cliente = {"nome": nome_cliente, "categoria": categoria_cliente, "ativo": True}
+        clientes.append(dados_do_cliente)
         print(f"O cliente {nome_cliente} foi cadastrado com sucesso\n")
         retorna_menu()
 
