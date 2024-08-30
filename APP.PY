@@ -2,19 +2,20 @@ import os
 
 clientes = [
     {"nome": "Ana Silva", "categoria": "Novo Cliente", "ativo": True},
-    {"nome": "João Pereira", "categoria": "Cliente Frequente", "ativo": False},
+    {"nome": "Vitória Pereira", "categoria": "Cliente Frequente", "ativo": False},
     {"nome": "Maria Oliveira", "categoria": "Cliente Frequente", "ativo": True}
 ]
 
 def mostra_titulo():
     print("""
     
-██████╗░██╗░█████╗░  ██╗░░██╗░█████╗░██╗██████╗░
-██╔══██╗██║██╔══██╗  ██║░░██║██╔══██╗██║██╔══██╗
-██████╦╝██║███████║  ███████║███████║██║██████╔╝
-██╔══██╗██║██╔══██║  ██╔══██║██╔══██║██║██╔══██╗
-██████╦╝██║██║░░██║  ██║░░██║██║░░██║██║██║░░██║
-╚═════╝░╚═╝╚═╝░░╚═╝  ╚═╝░░╚═╝╚═╝░░╚═╝╚═╝╚═╝░░╚═╝""")
+
+██╗░░██╗░█████╗░██╗██████╗░    ███████╗██╗░░░░░███████╗░██████╗░░█████╗░███╗░░██╗░█████╗░███████╗
+██║░░██║██╔══██╗██║██╔══██╗    ██╔════╝██║░░░░░██╔════╝██╔════╝░██╔══██╗████╗░██║██╔══██╗██╔════╝
+███████║███████║██║██████╔╝    █████╗░░██║░░░░░█████╗░░██║░░██╗░███████║██╔██╗██║██║░░╚═╝█████╗░░
+██╔══██║██╔══██║██║██╔══██╗    ██╔══╝░░██║░░░░░██╔══╝░░██║░░╚██╗██╔══██║██║╚████║██║░░██╗██╔══╝░░
+██║░░██║██║░░██║██║██║░░██║    ███████╗███████╗███████╗╚██████╔╝██║░░██║██║░╚███║╚█████╔╝███████╗
+╚═╝░░╚═╝╚═╝░░╚═╝╚═╝╚═╝░░╚═╝    ╚══════╝╚══════╝╚══════╝░╚═════╝░╚═╝░░╚═╝╚═╝░░╚══╝░╚════╝░╚══════╝""")
 
 def mostra_escolhas():
     print("1. Cadastrar Cliente")
@@ -24,7 +25,7 @@ def mostra_escolhas():
 
 def escolhe_opcao():
     def exibir_subtitulo(texto):
-        os.system("cls" if os.name == 'nt' else 'clear')
+        os.system("clear")
         print(texto)
         print(" ")
 
@@ -34,24 +35,38 @@ def escolhe_opcao():
 
     def cadastrar_cliente():
         exibir_subtitulo("Cadastrar Cliente")
+
         nome_cliente = input("Digite o nome do cliente que deseja cadastrar: ")
         categoria_cliente = input("Digite a categoria do cliente: ")
         dados_do_cliente = {"nome": nome_cliente, "categoria": categoria_cliente, "ativo": True}
         clientes.append(dados_do_cliente)
         print(f"O cliente {nome_cliente} foi cadastrado com sucesso\n")
+
         retorna_menu()
 
     def listar_clientes():
         exibir_subtitulo("Lista de Clientes Cadastrados")
         if clientes:
             for cliente in clientes:
-                nome_cliente = cliente["nome"]
-                categoria_cliente = cliente["categoria"]
-                ativo = "Ativo" if cliente["ativo"] else "Inativo"
-                print(f" - {nome_cliente} | {categoria_cliente} | {ativo}")
-        else:
-            print("Nenhum cliente cadastrado.")
+            nome_cliente = cliente["nome"]
+            categoria_cliente = cliente["categoria"]
+            ativo = "Ativo" if cliente["ativo"] else "Inativo"
+            print(f" - {nome_cliente} | {categoria_cliente} | {ativo}")
         retorna_menu()
+
+    def ativar_cliente():
+        exibir_subtitulo("Ativar cliente")
+        nome_cliente = input("Digite o nome do cliente que deseja ativar: ")
+        cliente_encontrado = False
+
+        for cliente in clientes:
+            if nome_cliente == cliente['nome']:
+                cliente_encontrado = True
+                cliente['ativo'] = not cliente['ativo']
+                mensagem = f'A categoria {nome_cliente} foi ativado/desativado com sucesso' if cliente['ativo'] else f'A categoria {nome_cliente} foi desativado'
+                print(mensagem)
+        if not cliente_encontrado:
+            print('Não encontrado')        
 
     def atualizar_cliente():
         exibir_subtitulo("Atualizar Informações do Cliente")
