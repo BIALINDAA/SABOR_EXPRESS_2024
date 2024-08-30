@@ -1,21 +1,29 @@
 import os
+import platform
 
 clientes = [
-    {"nome": "Ana Silva", "categoria": "Novo Cliente", "ativo": True},
-    {"nome": "Vitória Pereira", "categoria": "Cliente Frequente", "ativo": False},
-    {"nome": "Maria Oliveira", "categoria": "Cliente Frequente", "ativo": True}
+    {"nome": "Cliente 1", "classe": "Novo Cliente", "ativo": True},
+    {"nome": "Cliente 2", "classe": "Cliente Frequente", "ativo": False},
+    {"nome": "Cliente 3", "classe": "Cliente Frequente", "ativo": True}
 ]
 
 def mostra_titulo():
     print("""
     
+███████╗██╗░░██╗██████╗░██╗░░██╗██████╗░███████╗██╗██████╗░
+██╔════╝██║░░██║██╔══██╗██║░░██║██╔══██╗██╔════╝██║██╔══██╗
+█████╗░░███████║██████╔╝███████║██████╔╝█████╗░░██║██████╔╝
+██╔══╝░░██╔══██║██╔═══╝░██╔══██║██╔═══╝░██╔══╝░░██║██╔══██╗
+███████╗██║░░██║██║░░░░░██║░░██║██║░░░░███████╗██║██║░░██║
+╚══════╝╚═╝░░╚═╝╚═╝░░░░░╚═╝░░╚═╝╚═╝░░░░╚══════╝╚═╝╚═╝░░╚═╝
 
-██╗░░██╗░█████╗░██╗██████╗░    ███████╗██╗░░░░░███████╗░██████╗░░█████╗░███╗░░██╗░█████╗░███████╗
-██║░░██║██╔══██╗██║██╔══██╗    ██╔════╝██║░░░░░██╔════╝██╔════╝░██╔══██╗████╗░██║██╔══██╗██╔════╝
-███████║███████║██║██████╔╝    █████╗░░██║░░░░░█████╗░░██║░░██╗░███████║██╔██╗██║██║░░╚═╝█████╗░░
-██╔══██║██╔══██║██║██╔══██╗    ██╔══╝░░██║░░░░░██╔══╝░░██║░░╚██╗██╔══██║██║╚████║██║░░██╗██╔══╝░░
-██║░░██║██║░░██║██║██║░░██║    ███████╗███████╗███████╗╚██████╔╝██║░░██║██║░╚███║╚█████╔╝███████╗
-╚═╝░░╚═╝╚═╝░░╚═╝╚═╝╚═╝░░╚═╝    ╚══════╝╚══════╝╚══════╝░╚═════╝░╚═╝░░╚═╝╚═╝░░╚══╝░╚════╝░╚══════╝""")
+██████╗░██╗░░░░░██╗██╗░░██╗███████╗██╗░░██╗██╗░░██╗██╗██████╗░
+██╔══██╗██║░░░░░██║██║░░██║██╔════╝██║░░██║██║░░██║██║██╔══██╗
+██████╦╝██║░░░░░██║███████║█████╗░░███████║███████║██║██║░░██║
+██╔══██╗██║░░░░░██║██╔══██║██╔══╝░░██╔══██║██╔══██║██║██║░░██║
+██████╦╝███████╗██║██║░░██║███████╗██║░░██║██║░░██║██║██████╔╝
+╚═════╝░╚══════╝╚═╝╚═╝░░╚═╝╚══════╝╚═╝░░╚═╝╚═╝░░╚═╝╚═╝╚═════╝░
+""")
 
 def mostra_escolhas():
     print("1. Cadastrar Cliente")
@@ -24,9 +32,13 @@ def mostra_escolhas():
     print("4. Sair")
 
 def escolhe_opcao():
+
     def exibir_subtitulo(texto):
-        os.system("clear")
+        os.system("cls" if platform.system() == "Windows" else "clear")
+        linha = '-' * 65
+        print(linha)
         print(texto)
+        print(linha)
         print(" ")
 
     def retorna_menu():
@@ -37,8 +49,8 @@ def escolhe_opcao():
         exibir_subtitulo("Cadastrar Cliente")
 
         nome_cliente = input("Digite o nome do cliente que deseja cadastrar: ")
-        categoria_cliente = input("Digite a categoria do cliente: ")
-        dados_do_cliente = {"nome": nome_cliente, "categoria": categoria_cliente, "ativo": True}
+        classe_cliente = input("Digite a classe do cliente: ")
+        dados_do_cliente = {"nome": nome_cliente, "classe": classe_cliente, "ativo": True}
         clientes.append(dados_do_cliente)
         print(f"O cliente {nome_cliente} foi cadastrado com sucesso\n")
 
@@ -46,27 +58,30 @@ def escolhe_opcao():
 
     def listar_clientes():
         exibir_subtitulo("Lista de Clientes Cadastrados")
-        if clientes:
-            for cliente in clientes:
+        for cliente in clientes:
             nome_cliente = cliente["nome"]
-            categoria_cliente = cliente["categoria"]
+            classe_cliente = cliente["classe"]
             ativo = "Ativo" if cliente["ativo"] else "Inativo"
-            print(f" - {nome_cliente} | {categoria_cliente} | {ativo}")
+            print(f" - {nome_cliente.ljust(20)} | {classe_cliente.ljust(20)} | {ativo}")
+        print()
         retorna_menu()
 
     def ativar_cliente():
-        exibir_subtitulo("Ativar cliente")
-        nome_cliente = input("Digite o nome do cliente que deseja ativar: ")
+        exibir_subtitulo("Ativar Cliente")
+        nome_cliente = input("Digite o nome do cliente que deseja ativar/desativar: ")
         cliente_encontrado = False
 
         for cliente in clientes:
-            if nome_cliente == cliente['nome']:
+            if nome_cliente.lower() == cliente["nome"].lower():
                 cliente_encontrado = True
-                cliente['ativo'] = not cliente['ativo']
-                mensagem = f'A categoria {nome_cliente} foi ativado/desativado com sucesso' if cliente['ativo'] else f'A categoria {nome_cliente} foi desativado'
+                cliente["ativo"] = not cliente["ativo"]
+                mensagem = f'O cliente {nome_cliente} foi ativado com sucesso' if cliente["ativo"] else f'O cliente {nome_cliente} foi desativado com sucesso'
                 print(mensagem)
+                break
         if not cliente_encontrado:
-            print('Não encontrado')        
+            print("Cliente não encontrado")
+
+        retorna_menu()
 
     def atualizar_cliente():
         exibir_subtitulo("Atualizar Informações do Cliente")
@@ -75,8 +90,8 @@ def escolhe_opcao():
             nome_cliente = input("Digite o nome do cliente para atualizar informações: ")
             for cliente in clientes:
                 if cliente["nome"].lower() == nome_cliente.lower():
-                    nova_categoria = input("Digite a nova categoria do cliente: ")
-                    cliente["categoria"] = nova_categoria
+                    nova_classe = input("Digite a nova classe do cliente: ")
+                    cliente["classe"] = nova_classe
                     cliente["ativo"] = True
                     print(f"As informações do cliente {nome_cliente} foram atualizadas com sucesso\n")
                     break
@@ -85,7 +100,7 @@ def escolhe_opcao():
         retorna_menu()
 
     def finalizar_programa():
-        os.system("cls" if os.name == 'nt' else 'clear')
+        os.system("cls" if platform.system() == "Windows" else "clear")
         print("Finalizando o programa\n")
         exit()
 
@@ -101,7 +116,7 @@ def escolhe_opcao():
         elif opcao_escolhida == 2:
             listar_clientes()
         elif opcao_escolhida == 3:
-            atualizar_cliente()
+            ativar_cliente()
         elif opcao_escolhida == 4:
             finalizar_programa()
         else:
